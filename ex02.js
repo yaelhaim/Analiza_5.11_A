@@ -10,9 +10,33 @@
 //
 // Run: node ex02.js
 
+// Exercise 2: Directory Files Only
+
 const fs = require("fs");
 const path = require("path");
 
 const directoryPath = path.join(__dirname, "my-folder");
+
+fs.readdir(directoryPath, (err, files) => {
+    if (err) {
+        console.log(err);
+        return;
+    }
+
+    files.forEach((item) => {
+        const filePath = path.join(directoryPath, item);
+
+        fs.lstat(filePath, (err, stats) => {
+            if (err) {
+                console.log(err);
+                return;
+            }
+
+            if (stats.isFile()) {
+                console.log(`File: ${item}`);
+            }
+        });
+    });
+});
 
 // write your code here
