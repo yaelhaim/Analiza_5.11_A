@@ -17,3 +17,47 @@ const path = require("path");
 const directoryPath = path.join(__dirname, "data-folder");
 
 // write your code here
+// Exercise 11: Sum File Sizes in Folder
+
+
+fs.readdir(directoryPath, (err, entries) => {
+    if (err) {
+        console.log(err);
+        return;
+    }
+
+    let totalSize = 0;
+    let completed = 0;
+
+    if (entries.length === 0) {
+        console.log(`Total size: ${totalSize} bytes`);
+        return;
+    }
+
+    entries.forEach((entryName) => {
+        const filePath = path.join(directoryPath, entryName);
+
+        fs.lstat(filePath, (err, stats) => {
+            if (err) {
+                console.log(err);
+                completed++;
+
+                if (completed === entries.length) {
+                    console.log(`Total size: ${totalSize} bytes`);
+                }
+
+                return;
+            }
+
+            if (stats.isFile()) {
+                totalSize += stats.size;
+            }
+
+            completed++;
+
+            if (completed === entries.length) {
+                console.log(`Total size: ${totalSize} bytes`);
+            }
+        });
+    });
+});
